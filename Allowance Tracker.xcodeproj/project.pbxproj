@@ -1,0 +1,442 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0847020A2A22FCED001AC7BA /* KeyboardModView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084702092A22FCED001AC7BA /* KeyboardModView.swift */; };
+		08BE8A422A1FCA28003F3A8F /* Allowance_TrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BE8A412A1FCA28003F3A8F /* Allowance_TrackerApp.swift */; };
+		08BE8A462A1FCA2B003F3A8F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08BE8A452A1FCA2B003F3A8F /* Assets.xcassets */; };
+		08BE8A492A1FCA2B003F3A8F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08BE8A482A1FCA2B003F3A8F /* Preview Assets.xcassets */; };
+		08BE8A552A1FCB0E003F3A8F /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BE8A542A1FCB0E003F3A8F /* ImagePicker.swift */; };
+		08BE8A572A1FCB4D003F3A8F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BE8A562A1FCB4D003F3A8F /* MainView.swift */; };
+		08BE8A592A1FCB59003F3A8F /* EntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BE8A582A1FCB59003F3A8F /* EntryView.swift */; };
+		08BE8A5B2A1FCB68003F3A8F /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BE8A5A2A1FCB68003F3A8F /* EditView.swift */; };
+		08BE8A5D2A1FCB86003F3A8F /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BE8A5C2A1FCB86003F3A8F /* DetailView.swift */; };
+		08BE8A5F2A1FCC00003F3A8F /* DataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BE8A5E2A1FCC00003F3A8F /* DataViewModel.swift */; };
+		08BE8A612A1FEC27003F3A8F /* UsersInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BE8A602A1FEC27003F3A8F /* UsersInfo.swift */; };
+		08D55E3B2A23AC9600C6943C /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D55E3A2A23AC9600C6943C /* SplashScreen.swift */; };
+		08D55E3E2A23BB1C00C6943C /* Lobster-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 08D55E3D2A23BB1C00C6943C /* Lobster-Regular.ttf */; };
+		08D55E402A23BC1700C6943C /* Allowance-Tracker-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 08D55E3F2A23BBEF00C6943C /* Allowance-Tracker-Info.plist */; };
+		08D55E422A23E67200C6943C /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D55E412A23E67200C6943C /* AppColors.swift */; };
+		08D55E442A24E18100C6943C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D55E432A24E18100C6943C /* SettingsView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		084702092A22FCED001AC7BA /* KeyboardModView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardModView.swift; sourceTree = "<group>"; };
+		08BE8A3E2A1FCA28003F3A8F /* Allowance Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Allowance Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		08BE8A412A1FCA28003F3A8F /* Allowance_TrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Allowance_TrackerApp.swift; sourceTree = "<group>"; };
+		08BE8A452A1FCA2B003F3A8F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		08BE8A482A1FCA2B003F3A8F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		08BE8A542A1FCB0E003F3A8F /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		08BE8A562A1FCB4D003F3A8F /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		08BE8A582A1FCB59003F3A8F /* EntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryView.swift; sourceTree = "<group>"; };
+		08BE8A5A2A1FCB68003F3A8F /* EditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditView.swift; sourceTree = "<group>"; };
+		08BE8A5C2A1FCB86003F3A8F /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		08BE8A5E2A1FCC00003F3A8F /* DataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataViewModel.swift; sourceTree = "<group>"; };
+		08BE8A602A1FEC27003F3A8F /* UsersInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersInfo.swift; sourceTree = "<group>"; };
+		08D55E3A2A23AC9600C6943C /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
+		08D55E3D2A23BB1C00C6943C /* Lobster-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lobster-Regular.ttf"; sourceTree = "<group>"; };
+		08D55E3F2A23BBEF00C6943C /* Allowance-Tracker-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Allowance-Tracker-Info.plist"; sourceTree = SOURCE_ROOT; };
+		08D55E412A23E67200C6943C /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
+		08D55E432A24E18100C6943C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		08BE8A3B2A1FCA28003F3A8F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08BE8A352A1FCA28003F3A8F = {
+			isa = PBXGroup;
+			children = (
+				08BE8A402A1FCA28003F3A8F /* Allowance Tracker */,
+				08BE8A3F2A1FCA28003F3A8F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		08BE8A3F2A1FCA28003F3A8F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				08BE8A3E2A1FCA28003F3A8F /* Allowance Tracker.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		08BE8A402A1FCA28003F3A8F /* Allowance Tracker */ = {
+			isa = PBXGroup;
+			children = (
+				08D55E3F2A23BBEF00C6943C /* Allowance-Tracker-Info.plist */,
+				08BE8A512A1FCA96003F3A8F /* View-Model */,
+				08BE8A502A1FCA8E003F3A8F /* View */,
+				08BE8A4F2A1FCA84003F3A8F /* Model */,
+				08D55E3C2A23BB0500C6943C /* Font */,
+				08BE8A412A1FCA28003F3A8F /* Allowance_TrackerApp.swift */,
+				08BE8A452A1FCA2B003F3A8F /* Assets.xcassets */,
+				08BE8A472A1FCA2B003F3A8F /* Preview Content */,
+			);
+			path = "Allowance Tracker";
+			sourceTree = "<group>";
+		};
+		08BE8A472A1FCA2B003F3A8F /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				08BE8A482A1FCA2B003F3A8F /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		08BE8A4F2A1FCA84003F3A8F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				08BE8A542A1FCB0E003F3A8F /* ImagePicker.swift */,
+				08BE8A602A1FEC27003F3A8F /* UsersInfo.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		08BE8A502A1FCA8E003F3A8F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				08BE8A562A1FCB4D003F3A8F /* MainView.swift */,
+				08BE8A582A1FCB59003F3A8F /* EntryView.swift */,
+				08BE8A5C2A1FCB86003F3A8F /* DetailView.swift */,
+				08D55E802A2566F200C6943C /* LoadingView */,
+				08D55E7F2A2566DA00C6943C /* ChangeViews */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		08BE8A512A1FCA96003F3A8F /* View-Model */ = {
+			isa = PBXGroup;
+			children = (
+				08BE8A5E2A1FCC00003F3A8F /* DataViewModel.swift */,
+				084702092A22FCED001AC7BA /* KeyboardModView.swift */,
+				08D55E412A23E67200C6943C /* AppColors.swift */,
+			);
+			path = "View-Model";
+			sourceTree = "<group>";
+		};
+		08D55E3C2A23BB0500C6943C /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				08D55E3D2A23BB1C00C6943C /* Lobster-Regular.ttf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
+		08D55E7F2A2566DA00C6943C /* ChangeViews */ = {
+			isa = PBXGroup;
+			children = (
+				08BE8A5A2A1FCB68003F3A8F /* EditView.swift */,
+				08D55E432A24E18100C6943C /* SettingsView.swift */,
+			);
+			path = ChangeViews;
+			sourceTree = "<group>";
+		};
+		08D55E802A2566F200C6943C /* LoadingView */ = {
+			isa = PBXGroup;
+			children = (
+				08D55E3A2A23AC9600C6943C /* SplashScreen.swift */,
+			);
+			path = LoadingView;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		08BE8A3D2A1FCA28003F3A8F /* Allowance Tracker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 08BE8A4C2A1FCA2B003F3A8F /* Build configuration list for PBXNativeTarget "Allowance Tracker" */;
+			buildPhases = (
+				08BE8A3A2A1FCA28003F3A8F /* Sources */,
+				08BE8A3B2A1FCA28003F3A8F /* Frameworks */,
+				08BE8A3C2A1FCA28003F3A8F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Allowance Tracker";
+			productName = "Allowance Tracker";
+			productReference = 08BE8A3E2A1FCA28003F3A8F /* Allowance Tracker.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08BE8A362A1FCA28003F3A8F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1430;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					08BE8A3D2A1FCA28003F3A8F = {
+						CreatedOnToolsVersion = 14.3;
+					};
+				};
+			};
+			buildConfigurationList = 08BE8A392A1FCA28003F3A8F /* Build configuration list for PBXProject "Allowance Tracker" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 08BE8A352A1FCA28003F3A8F;
+			productRefGroup = 08BE8A3F2A1FCA28003F3A8F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				08BE8A3D2A1FCA28003F3A8F /* Allowance Tracker */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		08BE8A3C2A1FCA28003F3A8F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08BE8A492A1FCA2B003F3A8F /* Preview Assets.xcassets in Resources */,
+				08D55E3E2A23BB1C00C6943C /* Lobster-Regular.ttf in Resources */,
+				08D55E402A23BC1700C6943C /* Allowance-Tracker-Info.plist in Resources */,
+				08BE8A462A1FCA2B003F3A8F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		08BE8A3A2A1FCA28003F3A8F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08D55E3B2A23AC9600C6943C /* SplashScreen.swift in Sources */,
+				08BE8A5D2A1FCB86003F3A8F /* DetailView.swift in Sources */,
+				08BE8A5F2A1FCC00003F3A8F /* DataViewModel.swift in Sources */,
+				08BE8A552A1FCB0E003F3A8F /* ImagePicker.swift in Sources */,
+				08D55E422A23E67200C6943C /* AppColors.swift in Sources */,
+				08BE8A422A1FCA28003F3A8F /* Allowance_TrackerApp.swift in Sources */,
+				08BE8A572A1FCB4D003F3A8F /* MainView.swift in Sources */,
+				08BE8A612A1FEC27003F3A8F /* UsersInfo.swift in Sources */,
+				0847020A2A22FCED001AC7BA /* KeyboardModView.swift in Sources */,
+				08D55E442A24E18100C6943C /* SettingsView.swift in Sources */,
+				08BE8A5B2A1FCB68003F3A8F /* EditView.swift in Sources */,
+				08BE8A592A1FCB59003F3A8F /* EntryView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		08BE8A4A2A1FCA2B003F3A8F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		08BE8A4B2A1FCA2B003F3A8F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		08BE8A4D2A1FCA2B003F3A8F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Allowance Tracker/Preview Content\"";
+				DEVELOPMENT_TEAM = 8XX99S4FGN;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Allowance-Tracker-Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "KingofKings.Allowance-Tracker";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		08BE8A4E2A1FCA2B003F3A8F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Allowance Tracker/Preview Content\"";
+				DEVELOPMENT_TEAM = 8XX99S4FGN;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Allowance-Tracker-Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "KingofKings.Allowance-Tracker";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		08BE8A392A1FCA28003F3A8F /* Build configuration list for PBXProject "Allowance Tracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08BE8A4A2A1FCA2B003F3A8F /* Debug */,
+				08BE8A4B2A1FCA2B003F3A8F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		08BE8A4C2A1FCA2B003F3A8F /* Build configuration list for PBXNativeTarget "Allowance Tracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				08BE8A4D2A1FCA2B003F3A8F /* Debug */,
+				08BE8A4E2A1FCA2B003F3A8F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08BE8A362A1FCA28003F3A8F /* Project object */;
+}
