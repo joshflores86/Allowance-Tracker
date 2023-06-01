@@ -10,8 +10,8 @@ import SwiftUI
 struct DetailView: View {
     
     @AppStorage ("foregroundColor") private var foregroundColor = AppColors.appColorYellow
-     @AppStorage ("backgroundColor") private var backgroundColor = AppColors.appColorGray
-     @AppStorage ("textColor") private var textColor = AppColors.appColorBlue
+    @AppStorage ("backgroundColor") private var backgroundColor = AppColors.appColorGray
+    @AppStorage ("textColor") private var textColor = AppColors.appColorBlue
     @EnvironmentObject var dataViewModel: DataViewModel
     @State var usersInfo: UsersInfo
     @State var name: String = ""
@@ -19,10 +19,14 @@ struct DetailView: View {
     @State var amount: String = ""
     @State var id = UUID()
     @State var currency = ""
+    @State var finalPay: Int = 0
+    //    @State var initialValue: Int = 0
+    
     
     
     var body: some View {
-        ScrollView(.vertical, showsIndicators: true) {
+        
+        ZStack{
             VStack{
                 Text(name)
                     .font(.system(size: 40, weight: .bold, design: .monospaced))
@@ -32,42 +36,58 @@ struct DetailView: View {
                     .frame(width: 150, height: 150)
                     .clipShape(Circle())
                     .overlay(Circle().stroke(Color.black, lineWidth: 1))
-                
-                Text("\(currency)\(amount)")
-                    .font(.system(size: 35, weight: .bold, design: .monospaced))
+                HStack{
+                    Spacer()
+                    Text("\(currency)\(amount)")     //"\(currency)\(amount)"
+                        .font(.system(size: 35, weight: .bold, design: .monospaced))
+                        .frame(alignment: .centerLastTextBaseline)
+                        .padding(.bottom)
+                        .padding(.trailing, 10)
+                    
+                    Button("Final Pay") {
+                        dataViewModel.addFinalPayment()
+                    }
+                    
+                    .buttonStyle(.borderless)
                     .padding()
-            }
-        }
-        .frame(width: 600, alignment: .center)
-        VStack{
-            List{
-                if let specificUser = dataViewModel.usersInfoArray.first(where: { $0.id == self.id }){
-                    ForEach(0..<specificUser.steps) { num in
-                        HStack{
-                            Text(specificUser.valueHolder[num])
-                            Spacer()
-                            Text("$\(specificUser.initialValue[num])")
+                    .background(Color(rawValue: textColor.rawValue))
+                    .cornerRadius(25)
+                    .foregroundColor(Color(rawValue: foregroundColor.rawValue))
+                }
+                .padding(.trailing, 10)
+                
+                List{
+                    if let specificUser = dataViewModel.usersInfoArray.first(where: { $0.id == self.id }){
+                        if specificUser.steps != 0 {
+                            ForEach(0..<specificUser.steps) { num in
+                                HStack{
+                                    Text(specificUser.valueHolder[num])
+                                    Spacer()
+                                    Text("$\(specificUser.initialValue[num])")
+                                }
+                                .listStyle(.plain)
+                                .font(.system(size: 20, weight: .medium, design: .monospaced))
+                            }
                         }
                     }
-                    .listStyle(.plain)
-                    .font(.system(size: 20, weight: .medium, design: .monospaced))
                     
+                }
+                        
+                    
+                    
+                
+                
+                .onAppear {
+                    try? dataViewModel.load()
                 }
                 
             }
-            .onAppear {
-                try? dataViewModel.load()
-                
-            }
+            .background(Color.init(rawValue: backgroundColor.rawValue)?.ignoresSafeArea())
+            
         }
-        
     }
-    
 }
 
-//    }
-
-//}
 
 
 

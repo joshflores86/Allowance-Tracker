@@ -19,7 +19,7 @@ struct UsersInfo: Hashable, Identifiable ,Codable {
     var avatarImageData: Data?
     var initialValue: [String] = []
     var valueHolder: [String] = []
-    var steps: Int
+    var steps: Int = 0
     var currency: String = ""
     
     var avatarImage: UIImage? {

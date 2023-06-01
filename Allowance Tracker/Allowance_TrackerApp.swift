@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct Allowance_TrackerApp: App {
     static var userInfo = UsersInfo(id: UUID(), name: "", amount: "", steps: 0)
-    
+    @EnvironmentObject var dataViewModel: DataViewModel
     var body: some Scene {
         WindowGroup {
             SplashScreen(dataViewModel: DataViewModel(usersInfo: UsersInfo(id: UUID(), name: "", amount: "", steps: 0)))
