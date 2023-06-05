@@ -22,6 +22,9 @@ struct EntryView: View {
     @State var avatarImage = UIImage(named: "default-avatar")!
     @State var step = 0
     @State var currency: String = ""
+    @State var showCustomTextAlert = false
+    @State var textFieldValue: String = ""
+    
     
     
     var body: some View {
@@ -42,25 +45,38 @@ struct EntryView: View {
                         .padding()
                         .onTapGesture {showImagePicker = true}
                     TextField("Add name", text: $userName)
-                        
+                        .autocapitalization(.words)
                     TextField("Enter Initial Amount", text: $givenAmount)
                         .padding(.bottom)
-                        
+                        .keyboardType(.decimalPad)
+                    
                     VStack{
-                        Stepper(value: $step, in: 0...dataViewModel.billsArray.count) {
-                            Picker("Currency", selection: $currency) {
-                                ForEach(dataViewModel.usersCurrency, id: \.self) {i in
-                                    Text(i)
-                                }
-                            }
+                        if step >= 1{
+                            Button("Custom") {
+                                showCustomTextAlert = true
+                            }.padding(.leading, 250)
                         }
+                       
+                        HStack{
+                            Stepper(value: $step, in: 0...dataViewModel.billsArray.count) {
+                                Picker("Currency", selection: $currency) {
+                                    ForEach(dataViewModel.usersCurrency, id: \.self) { i in
+                                        Text(i)
+                                    }
+                                }
+                                
+                            }
+                            
+                        }
+                        
                         ForEach(0..<step, id: \.self) { index in
                             HStack{
-                                Picker("", selection: $dataViewModel.valuePlacer[index]) {
+                                Picker(selection: $dataViewModel.valuePlacer[index], label: pickerLabel) {
                                     ForEach(dataViewModel.billsArray, id: \.self ) { value in
-                                        Text(value).tag(index) }}
+                                        Text(value).tag(index)}}
                                 TextField("Enter Amount", text: $dataViewModel.initValue[index])
                                     .textFieldStyle(.roundedBorder)
+                                    .keyboardType(.decimalPad)
                             }
                         }
                     }
@@ -74,7 +90,7 @@ struct EntryView: View {
                 
                 VStack{
                     Button("Save") {
-                        dataViewModel.showAlert(num: step, name: userName, amount: givenAmount)
+                        dataViewModel.showAlert(num: step, name: userName, amount: givenAmount, firstValue: dataViewModel.initValue)
                         dataViewModel.addValueToArray()
                         dataViewModel.addInitialValue()
                         dataViewModel.steps = step
@@ -99,6 +115,13 @@ struct EntryView: View {
             .alert(isPresented: getAlertBinding(), content: {
                 getAlert()
             })
+            .alert("Enter Custom Bill", isPresented: $showCustomTextAlert) {
+                TextField("Custom Bill", text: $textFieldValue)
+                Button("Save") {
+                    dataViewModel.billsArray.append(textFieldValue)
+                    showCustomTextAlert = false
+                }
+            }
             //MARK: - Alerts Above
             .foregroundColor(foregroundColor)
             
@@ -106,34 +129,59 @@ struct EntryView: View {
     }
     
     private func getAlertBinding() -> Binding<Bool> {
-            if dataViewModel.showMissingNameAlert {
-                return $dataViewModel.showMissingNameAlert
-            } else if dataViewModel.showMissingAmountAlert {
-                return $dataViewModel.showMissingAmountAlert
-            } else if dataViewModel.showBillAlert {
-                return $dataViewModel.showBillAlert
-            } else if dataViewModel.showAmountAlert {
-                return $dataViewModel.showAmountAlert
-            } else {
-                return Binding.constant(false)
-            }
+        if dataViewModel.showMissingNameAlert {
+            return $dataViewModel.showMissingNameAlert
+        } else if dataViewModel.showMissingAmountAlert {
+            return $dataViewModel.showMissingAmountAlert
+        } else if dataViewModel.showBillAlert {
+            return $dataViewModel.showBillAlert
+        } else if dataViewModel.showAmountAlert {
+            return $dataViewModel.showAmountAlert
+        } else {
+            return Binding.constant(false)
         }
+    }
     func getAlert() -> Alert {
-            if dataViewModel.showMissingNameAlert {
-                return Alert(title: Text("Missing Users Name"), message: Text("Please enter name"))
-            } else if dataViewModel.showMissingAmountAlert {
-                return Alert(title: Text("Missing Initial Amount"), message: Text("Please enter users initial amount"))
-            } else if dataViewModel.showBillAlert {
-                return Alert(title: Text("Missing Bill and Amount"), message: Text("Please press the '+' to add the type of bill and amount"))
-            } else if dataViewModel.showAmountAlert {
-                return Alert(title: Text("Missing Amount"), message: Text("Please enter amount value"))
-            } else {
-                return Alert(title: Text(""), message: Text(""))
+        if dataViewModel.showMissingNameAlert {
+            return Alert(title: Text("Missing Users Name"), message: Text("Please enter name"))
+        } else if dataViewModel.showMissingAmountAlert {
+            return Alert(title: Text("Missing Initial Amount"), message: Text("Please enter users initial amount"))
+        } else if dataViewModel.showBillAlert {
+            return Alert(title: Text("Missing Bill and Amount"), message: Text("Please press the '+' to add the type of bill and amount"))
+        } else if dataViewModel.showAmountAlert {
+            return Alert(title: Text("Missing Amount"), message: Text("Please enter amount value"))
+        
+        } else {
+            return Alert(title: Text(""), message: Text(""))
+        }
+    }
+//    func customTextAlert() -> Alert {
+//      let customAlert = Alert(title: Text("Enter custom bill"), message: Text(""), primaryButton: .default(Text("Save"), action: {
+//            dataViewModel.billsArray.append(textFieldValue)
+//        }), secondaryButton: .cancel())
+//        TextField("Enter Custom Bill", text: $textFieldValue)
+//        return customAlert
+//    }
+    var pickerLabel: some View {
+        HStack {
+            Text("Custom")
+            Spacer()
+            Button(action: {
+                for num in 0..<step{
+                    if dataViewModel.valuePlacer[num] == "Custom" {
+                        showCustomTextAlert = true
+                    }
+                }
+            }) {
+                Text("Button")
+                    .padding(8)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
             }
         }
+    }
 }
-
-
 struct AddUserView_Previews: PreviewProvider {
     @State private static var userInfo = UsersInfo(id: UUID(), name: "", amount: "", steps: 0)
     

@@ -18,6 +18,7 @@
 		08BE8A5D2A1FCB86003F3A8F /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BE8A5C2A1FCB86003F3A8F /* DetailView.swift */; };
 		08BE8A5F2A1FCC00003F3A8F /* DataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BE8A5E2A1FCC00003F3A8F /* DataViewModel.swift */; };
 		08BE8A612A1FEC27003F3A8F /* UsersInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BE8A602A1FEC27003F3A8F /* UsersInfo.swift */; };
+		08CF8E142A2C3A9D0081AFC9 /* EmptyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CF8E132A2C3A9D0081AFC9 /* EmptyListView.swift */; };
 		08D55E3B2A23AC9600C6943C /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D55E3A2A23AC9600C6943C /* SplashScreen.swift */; };
 		08D55E3E2A23BB1C00C6943C /* Lobster-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 08D55E3D2A23BB1C00C6943C /* Lobster-Regular.ttf */; };
 		08D55E402A23BC1700C6943C /* Allowance-Tracker-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 08D55E3F2A23BBEF00C6943C /* Allowance-Tracker-Info.plist */; };
@@ -38,6 +39,7 @@
 		08BE8A5C2A1FCB86003F3A8F /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		08BE8A5E2A1FCC00003F3A8F /* DataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataViewModel.swift; sourceTree = "<group>"; };
 		08BE8A602A1FEC27003F3A8F /* UsersInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersInfo.swift; sourceTree = "<group>"; };
+		08CF8E132A2C3A9D0081AFC9 /* EmptyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyListView.swift; sourceTree = "<group>"; };
 		08D55E3A2A23AC9600C6943C /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
 		08D55E3D2A23BB1C00C6943C /* Lobster-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lobster-Regular.ttf"; sourceTree = "<group>"; };
 		08D55E3F2A23BBEF00C6943C /* Allowance-Tracker-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Allowance-Tracker-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -110,6 +112,7 @@
 				08BE8A562A1FCB4D003F3A8F /* MainView.swift */,
 				08BE8A582A1FCB59003F3A8F /* EntryView.swift */,
 				08BE8A5C2A1FCB86003F3A8F /* DetailView.swift */,
+				08CF8E132A2C3A9D0081AFC9 /* EmptyListView.swift */,
 				08D55E802A2566F200C6943C /* LoadingView */,
 				08D55E7F2A2566DA00C6943C /* ChangeViews */,
 			);
@@ -228,6 +231,7 @@
 				08BE8A5F2A1FCC00003F3A8F /* DataViewModel.swift in Sources */,
 				08BE8A552A1FCB0E003F3A8F /* ImagePicker.swift in Sources */,
 				08D55E422A23E67200C6943C /* AppColors.swift in Sources */,
+				08CF8E142A2C3A9D0081AFC9 /* EmptyListView.swift in Sources */,
 				08BE8A422A1FCA28003F3A8F /* Allowance_TrackerApp.swift in Sources */,
 				08BE8A572A1FCB4D003F3A8F /* MainView.swift in Sources */,
 				08BE8A612A1FEC27003F3A8F /* UsersInfo.swift in Sources */,

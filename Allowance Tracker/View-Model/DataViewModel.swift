@@ -24,6 +24,7 @@ class DataViewModel: ObservableObject {
     @Published var showBillAlert = false
     @Published var showMissingNameAlert = false
     @Published var showMissingAmountAlert = false
+    @Published var showCustomTextAlert = false
     
     init(usersInfo: UsersInfo){
         self.usersInfo = usersInfo
@@ -112,7 +113,7 @@ class DataViewModel: ObservableObject {
     
     
     
-    func showAlert(num: Int, name: String, amount: String) {
+    func showAlert(num: Int, name: String, amount: String, firstValue: [String]) {
         showMissingNameAlert = false
         showMissingAmountAlert = false
         showBillAlert = false
@@ -124,8 +125,8 @@ class DataViewModel: ObservableObject {
         }else if num == 0 {
             showBillAlert = true
         }else if num != 0 {
-            for i in 0...num {
-                if initValue[i] == "" {
+            for i in 0..<num {
+                if firstValue[i] == "" {
                     showAmountAlert = true
                 }
             }
@@ -133,5 +134,7 @@ class DataViewModel: ObservableObject {
             print("Everything worked fine")
         }
     }
+    
+    
     
 }

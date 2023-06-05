@@ -31,15 +31,8 @@ struct MainView: View {
                 
                 VStack{
                     if $dataViewModel.usersInfoArray.isEmpty  {
-                        Text("Allowance Tacker")
-                            .font(Font.custom("Lobster-Regular", size: 50))
-                            .frame(width: .infinity, height: 50, alignment: .leading)
-                        Text("Click '+' to add new ")
-                            .foregroundColor(Color(white: 0.0, opacity: 0.3))
-                            .font(.system(size: 20))
-                        Text("person name and amount")
-                            .foregroundColor(Color(white: 0.0, opacity: 0.3))
-                            .font(.system(size: 20))
+                        
+                        EmptyListView()
                     }else {
                         VStack{
                             Text("Allowance Tracker")
@@ -95,9 +88,12 @@ struct MainView: View {
                     
                 }
             }
+            
         }
+
         .foregroundColor(foregroundColor)
         .environmentObject(dataViewModel)
+       
     }
 }
 
