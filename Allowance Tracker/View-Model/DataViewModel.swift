@@ -74,6 +74,10 @@ class DataViewModel: ObservableObject {
         }
     }
     
+    func dismissKeyboard() {
+        UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.endEditing(true)
+    }
+    
     
     func addInitialValue(){
         for i in initValue {
@@ -110,7 +114,19 @@ class DataViewModel: ObservableObject {
     
     //MARK: - Alert Functions
     
-    
+    func getAlert() -> Alert {
+        if showMissingNameAlert {
+            return Alert(title: Text("Missing Users Name"), message: Text("Please enter name"))
+        } else if showMissingAmountAlert {
+            return Alert(title: Text("Missing Initial Amount"), message: Text("Please enter users initial amount"))
+        } else if showBillAlert {
+            return Alert(title: Text("Missing Bill and Amount"), message: Text("Please press the '+' to add the type of bill and amount"))
+        } else if showAmountAlert {
+            return Alert(title: Text("Missing Amount"), message: Text("Please enter amount value"))
+        } else {
+            return Alert(title: Text(""), message: Text(""))
+        }
+    }
     
     
     func showAlert(num: Int, name: String, amount: String, firstValue: [String]) {
