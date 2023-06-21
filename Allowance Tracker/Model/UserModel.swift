@@ -11,17 +11,20 @@ import SwiftUI
 import CoreData
 
 
-struct UsersInfo: Hashable, Identifiable ,Codable {
+struct UserModel: Hashable, Identifiable ,Codable {
+    
+    
     
     let id: UUID
     var name: String
     var amount: String
     var avatarImageData: Data?
     var initialValue: [String] = []
-    var valueHolder: [String] = []
+    var secondValue: [String] = []
+    var valueHolder: [String] 
     var steps: Int = 0
     var currency: String = ""
-    
+    var paymentComplete: Bool = false
     var avatarImage: UIImage? {
         get{
             guard let imageData = avatarImageData else {
@@ -32,6 +35,15 @@ struct UsersInfo: Hashable, Identifiable ,Codable {
             avatarImageData = newValue?.pngData()
         }
     }
-    
-    
 }
+
+struct BottomBarColorModifier: ViewModifier {
+    let color: Color
+    
+    func body(content: Content) -> some View {
+        content
+            .accentColor(color)
+    }
+}
+
+

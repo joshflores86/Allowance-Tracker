@@ -17,33 +17,32 @@ struct MainView: View {
     @AppStorage ("backgroundColor") private var backgroundColor = AppColors.appColorGray
     @AppStorage ("textColor") private var textColor = AppColors.appColorBlue
     //    @Environment(\ColorScheme, .dark)
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
     
     
     var body: some View {
         
         NavigationView {
-            
             ZStack{
                 Color(uiColor: UIColor(backgroundColor))
                     .opacity(0.3)
                     .ignoresSafeArea()
-                
                 VStack{
                     if $dataViewModel.usersInfoArray.isEmpty  {
-                        
                         EmptyListView()
                     }else {
                         VStack{
                             Text("Allowance Tracker")
                                 .font(Font.custom("Lobster-Regular", size: 50))
                                 .frame(width: .infinity, height: 50, alignment: .leading)
-                            
                             VStack{
                                 List {
                                     ForEach(dataViewModel.usersInfoArray, id: \.self) { users in
-                                        NavigationLink(destination: DetailView(usersInfo: dataViewModel.usersInfo, name: users.name, avatarImage: users.avatarImage ?? UIImage(named: "default-avatar")!, amount: users.amount, id: users.id, currency: users.currency)) {
-                                            
+                                        NavigationLink(destination: DetailView(usersInfo: dataViewModel.usersInfo,
+                                                                               name: users.name, avatarImage:
+                                                                                users.avatarImage ?? UIImage(named: "default-avatar")!,
+                                                                               amount: users.amount, id: users.id,
+                                                                               currency: users.currency)) {
                                             HStack{
                                                 Image(uiImage: (users.avatarImage ?? UIImage(systemName: "default-avatar"))!)
                                                     .resizable()
@@ -53,10 +52,12 @@ struct MainView: View {
                                                     .overlay(Circle().stroke(Color.black, lineWidth: 1))
                                                 Text(users.name)
                                                     .padding(.horizontal)
-                                                Text("\(users.currency)\(users.amount)")
+                                                Text("$\(users.amount)")
                                             }
+                                            
                                             .font(.system(size: 20, weight: .bold, design: .monospaced))
                                         }
+                                        
                                     }
                                     .onDelete(perform: dataViewModel.deleteUsers)
                                 }
@@ -71,8 +72,8 @@ struct MainView: View {
             }
             .onChange(of: dataViewModel.usersInfoArray, perform: { _ in
                 try! dataViewModel.save()
+                
             })
-            
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: EntryView()) {
@@ -85,12 +86,9 @@ struct MainView: View {
                         Text(Image(systemName: "gear"))
                             .foregroundColor(textColor)
                     }
-                    
                 }
             }
-            
         }
-
         .foregroundColor(foregroundColor)
         .environmentObject(dataViewModel)
        
@@ -108,7 +106,9 @@ extension Data {
 
 
 struct MainView_Previews: PreviewProvider {
-    @State private static var userInfo = UsersInfo(id: UUID(), name: "", amount: "", steps: 0)
+    
+    @State private static var userInfo = UserModel(id: UUID(), name: "", amount: "",
+                                                   valueHolder: [ ], steps: 0)
     @State var dataView: DataViewModel
     static var previews: some View {
         

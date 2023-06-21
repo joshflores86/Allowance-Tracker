@@ -33,7 +33,10 @@ struct EmptyListView: View {
 struct EmptyListView_Previews: PreviewProvider {
     static var previews: some View {
         EmptyListView()
-            .environmentObject(DataViewModel(usersInfo: UsersInfo(id: UUID(), name: "", amount: "")))
+            .environmentObject(DataViewModel(usersInfo:
+                                                UserModel(id: UUID(),
+                                                          name: "", amount: "",
+                                                          valueHolder: [])))
     }
         
 }

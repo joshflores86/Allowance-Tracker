@@ -9,11 +9,11 @@ import SwiftUI
 
 @main
 struct Allowance_TrackerApp: App {
-    static var userInfo = UsersInfo(id: UUID(), name: "", amount: "", steps: 0)
+    static var userInfo = UserModel(id: UUID(), name: "", amount: "", valueHolder: [], steps: 0)
     @EnvironmentObject var dataViewModel: DataViewModel
     var body: some Scene {
         WindowGroup {
-            SplashScreen(dataViewModel: DataViewModel(usersInfo: UsersInfo(id: UUID(), name: "", amount: "", steps: 0)))
+            SplashScreen(dataViewModel: DataViewModel(usersInfo: UserModel(id: UUID(), name: "", amount: "", valueHolder: [], steps: 0)))
 //            MainView(dataViewModel: DataViewModel(usersInfo: Allowance_TrackerApp.userInfo))
         }
     }

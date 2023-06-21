@@ -10,28 +10,39 @@ import UIKit
 import SwiftUI
 
 class DataViewModel: ObservableObject {
-    @Published var usersInfo: UsersInfo
-    @Published var usersInfoArray: [UsersInfo] = []
-    @Published var billsArray: [String] = ["Select type", "Electric", "Water", "Cable", "Internet", "Phone Bill", "Groceries", "Car Loan"]
+    @Published var usersInfo: UserModel
+    @Published var usersInfoArray: [UserModel] = []
+    @Published var billsArray: [String: [String]] = [
+        "Bills": ["Electric", "Water", "Cable", "Internet", "Phone Bill", "Groceries", "Car Loan"],
+        "Rewards": ["Good Grades", "Chores", "Good behavior", "Birthday"]
+    ]
     @Published var billsAndAmount: [String: Int] = [:]
-    @Published var initValue = Array(repeating: "", count: 10)
-    @Published var valuePlacer = Array(repeating: "", count: 10)
-    @Published var finalAmount: Double = 0.0
-    @Published var steps = 0
+    //    @Published var testValue1 = Array(repeating: "Good Behavior", count: 2)
+    //    @Published var testPlacer = Array(repeating: "100.00", count: 2)
+    @Published var firstValue = Array(repeating: "", count: 50)
+    @Published var secondValue = Array(repeating: "", count: 50)
+    @Published var valuePlacer = Array(repeating: "", count: 50)
+    @Published var finalAmount: String = ""
+    @Published var steps = 1
     @Published var usersCurrency: [String] = ["Currency", "$", "€", "£", "¥", "₣", "₹"]
-    @Published var selectedCurrency = "Currency"
+    @Published var selectedCurrency = ""
     @Published var showAmountAlert = false
     @Published var showBillAlert = false
     @Published var showMissingNameAlert = false
     @Published var showMissingAmountAlert = false
     @Published var showCustomTextAlert = false
+    @Published var showValue: Bool = false
+    @State var finalPay: String = ""
     
-    init(usersInfo: UsersInfo){
+//    @State var totalValueHolder = 0.00
+    @State var valueHolder: Double = 0.00
+    
+    init(usersInfo: UserModel){
         self.usersInfo = usersInfo
     }
     
-    func saveInfo(name: String, amount: String, selectImage: UIImage, initialArray: [String], valueArray: [String], steps: Int, selectedCurrency: String) {
-        usersInfoArray.append(UsersInfo(id: UUID(), name: name, amount: amount, avatarImageData: selectImage.pngData(), initialValue: initialArray, valueHolder: valueArray, steps: steps, currency: selectedCurrency))
+    func saveInfo(name: String, amount: String, selectImage: UIImage, initialArray: [String], secondValue: [String] , valueArray: [String], steps: Int, selectedCurrency: String) {
+        usersInfoArray.append(UserModel(id: UUID(), name: name, amount: amount, avatarImageData: selectImage.pngData(), initialValue: initialArray, secondValue: secondValue, valueHolder: valueArray, steps: steps, currency: selectedCurrency))
         
     }
     
@@ -53,7 +64,7 @@ class DataViewModel: ObservableObject {
     func load() throws {
         guard FileManager.default.isReadableFile(atPath: notesFile.path) else {return}
         let data = try Data(contentsOf: notesFile)
-        usersInfoArray = try JSONDecoder().decode([UsersInfo].self, from: data)
+        usersInfoArray = try JSONDecoder().decode([UserModel].self, from: data)
     }
     
     //MARK: - Other Functions
@@ -74,13 +85,19 @@ class DataViewModel: ObservableObject {
         }
     }
     
-    func dismissKeyboard() {
-        UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.endEditing(true)
+    func addSecValue(){
+        for i in secondValue {
+            if i != "" {
+                usersInfo.secondValue.append(i)
+                print(usersInfo.initialValue)
+            } else {
+                break
+            }
+        }
     }
     
-    
     func addInitialValue(){
-        for i in initValue {
+        for i in firstValue {
             if i != "" {
                 usersInfo.initialValue.append(i)
                 print(usersInfo.initialValue)
@@ -90,27 +107,50 @@ class DataViewModel: ObservableObject {
         }
     }
     
+    func dismissKeyboard() {
+        UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.endEditing(true)
+    }
     
+    func saveUpdateUserAmount(index: Array<UserModel>.Index) {
+        print(index)
+        var specificUsers = usersInfoArray[index]
+        specificUsers.amount = finalAmount
+        specificUsers.paymentComplete = showValue
+        print(specificUsers.amount)
+    }
     
-    
-    
-    func addFinalPayment() -> String {
-        if let specificAmount = usersInfoArray.first(where: { $0.id == usersInfo.id}){
-            if specificAmount.amount != "" {
-                if let amountValue = Double(specificAmount.amount){
-                    print(amountValue)
-                    for num in 0...specificAmount.steps{
-                        if let initialValue =  Double(specificAmount.initialValue[num]){
-                            let sum = amountValue - initialValue
-                            finalAmount = sum
-                            print(initialValue)
-                        }
-                    }
+    func addFinalPayment(index: Array<UserModel>.Index) {
+        var specificUsers = usersInfoArray[index]
+     
+        if specificUsers.amount != "" {
+            if let amountValue = Double(specificUsers.amount.replacingOccurrences(of: ",", with: "")) {
+                print(amountValue)
+                var totalValueHolder = 0.0
+                for num in 0..<specificUsers.valueHolder.count {
+                   let valueHolder = Double(specificUsers.valueHolder[num].replacingOccurrences(of: ",", with: "")) ?? 0.00
+                    print(valueHolder)
+                  totalValueHolder += valueHolder
                 }
+               
+                let sum = amountValue - totalValueHolder
+                showValue.toggle()
+                finalAmount = formatNumber(sum)
+                
+                
+                
             }
         }
-        return String(format: "%.2f", finalAmount)
     }
+    
+    
+    func formatNumber(_ number: Double) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.minimumFractionDigits = 2
+        numberFormatter.maximumFractionDigits = 2
+        return numberFormatter.string(from: NSNumber(value: number)) ?? ""
+    }
+    
     
     //MARK: - Alert Functions
     
@@ -129,7 +169,7 @@ class DataViewModel: ObservableObject {
     }
     
     
-    func showAlert(num: Int, name: String, amount: String, firstValue: [String]) {
+    func showAlert(num: Int, name: String, amount: String) {
         showMissingNameAlert = false
         showMissingAmountAlert = false
         showBillAlert = false
@@ -140,17 +180,15 @@ class DataViewModel: ObservableObject {
             showMissingAmountAlert = true
         }else if num == 0 {
             showBillAlert = true
-        }else if num != 0 {
-            for i in 0..<num {
-                if firstValue[i] == "" {
-                    showAmountAlert = true
-                }
-            }
+            //        }else if num != 0 {
+            //            for i in 0..<num {
+            //                if firstValue[i] == "" {
+            //                    showAmountAlert = true
+            //                }
+            //            }
         }else{
             print("Everything worked fine")
         }
     }
-    
-    
-    
 }
+

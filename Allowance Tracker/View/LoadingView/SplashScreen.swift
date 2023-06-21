@@ -27,7 +27,7 @@ struct SplashScreen: View {
                         .resizable()
                         .clipShape(Circle())
                         
-                        .backgroundStyle(.black)
+//                        .backgroundStyle(.black)
                         .scaledToFit()
                     Text("Allowance")
                         .foregroundColor(Color(allowanceColor))
@@ -61,7 +61,10 @@ struct SplashScreen: View {
 }
 
 struct SplashScreen_Previews: PreviewProvider {
-    static  private var dataViewModel = DataViewModel(usersInfo: UsersInfo(id: UUID(), name: "", amount: "", steps: 0))
+    static  private var dataViewModel =
+    DataViewModel(usersInfo:
+                    UserModel(id: UUID(), name: "",
+                              amount: "", valueHolder: [], steps: 0))
     
     static var previews: some View {
         SplashScreen(dataViewModel: dataViewModel)
