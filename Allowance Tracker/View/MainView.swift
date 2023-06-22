@@ -10,10 +10,10 @@ import SwiftUI
 
 struct MainView: View {
     
-    
-    @StateObject var dataViewModel: DataViewModel
-    @State var avatarImage: UIImage = UIImage(named: "default-avatar")!
-   @AppStorage ("foregroundColor") private var foregroundColor = AppColors.appColorYellow
+  
+    @EnvironmentObject var dataViewModel: DataViewModel
+    @State private var isDetailViewPresented = false
+    @AppStorage ("foregroundColor") private var foregroundColor = AppColors.appColorYellow
     @AppStorage ("backgroundColor") private var backgroundColor = AppColors.appColorGray
     @AppStorage ("textColor") private var textColor = AppColors.appColorBlue
     //    @Environment(\ColorScheme, .dark)
@@ -42,7 +42,8 @@ struct MainView: View {
                                                                                name: users.name, avatarImage:
                                                                                 users.avatarImage ?? UIImage(named: "default-avatar")!,
                                                                                amount: users.amount, id: users.id,
-                                                                               currency: users.currency)) {
+                                                                               currency: users.currency, showValue: users.paymentComplete,
+                                                                               hideSaveButton: users.showNoButton)) {
                                             HStack{
                                                 Image(uiImage: (users.avatarImage ?? UIImage(systemName: "default-avatar"))!)
                                                     .resizable()
@@ -61,22 +62,24 @@ struct MainView: View {
                                     }
                                     .onDelete(perform: dataViewModel.deleteUsers)
                                 }
+                                .onChange(of: dataViewModel.usersInfoArray, perform: { _ in
+                                    try! dataViewModel.save()
+                                    
+                                })
                             }
                         }
                     }
                 }
             }
+            .environmentObject(dataViewModel)
             .fixedSize(horizontal: false, vertical: false)
             .onAppear{
                 try? dataViewModel.load()
             }
-            .onChange(of: dataViewModel.usersInfoArray, perform: { _ in
-                try! dataViewModel.save()
-                
-            })
+            
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: EntryView()) {
+                    NavigationLink(destination: EntryView(dataViewModel: dataViewModel)) {
                         Text(Image(systemName: "plus"))
                             .foregroundColor(textColor)
                     }
@@ -90,7 +93,7 @@ struct MainView: View {
             }
         }
         .foregroundColor(foregroundColor)
-        .environmentObject(dataViewModel)
+      
        
     }
 }
@@ -112,7 +115,7 @@ struct MainView_Previews: PreviewProvider {
     @State var dataView: DataViewModel
     static var previews: some View {
         
-        MainView(dataViewModel: DataViewModel(usersInfo: userInfo))
+        MainView()
             .environmentObject(DataViewModel(usersInfo: userInfo))
     }
 }

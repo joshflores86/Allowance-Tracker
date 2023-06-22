@@ -18,7 +18,8 @@ struct SplashScreen: View {
     var body: some View {
         
         if isActive{
-            MainView(dataViewModel: dataViewModel)
+            MainView()
+                .environmentObject(dataViewModel)
         }else {
             VStack{
                 VStack{

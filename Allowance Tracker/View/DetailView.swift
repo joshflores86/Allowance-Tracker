@@ -20,11 +20,8 @@ struct DetailView: View {
     @State var amount: String = ""
     @State var id = UUID()
     @State var currency = ""
-    //    @State var finalPay: String = ""
-    
-    //    @State var totalValueHolder: Double = 0.00
-    //    @State var valueHolder: Double = 0.00
-    //    @State var initialValue: Int = 0
+    @State var showValue = false
+    @State var hideSaveButton = Bool()
     
     
     
@@ -42,16 +39,16 @@ struct DetailView: View {
                     .overlay(Circle().stroke(Color.black, lineWidth: 1))
                 HStack{
                     Spacer()
-                    Text(dataViewModel.showValue ? "$\(dataViewModel.finalAmount)" : "$\(amount)")
+                    if !hideSaveButton {
+                    Text("$\(amount)")//dataViewModel.showValue ? "$\(dataViewModel.finalAmount)" : )
                         .font(.system(size: 35, weight: .bold, design: .monospaced))
                         .frame(alignment: .centerLastTextBaseline)
                         .padding(.bottom)
                         .padding(.trailing, 5)
-                    if !dataViewModel.showValue {
                         Button("Final Payment", action: {
                             dataViewModel.addFinalPayment(index: dataViewModel.usersInfoArray.firstIndex(
                                 where: { $0.id == self.id })!)
-                            
+                            print(hideSaveButton)
                         })
                         .font(.system(size: 11))
                         .buttonStyle(.borderless)
@@ -60,18 +57,10 @@ struct DetailView: View {
                         .cornerRadius(25)
                         .foregroundColor(Color(rawValue: foregroundColor.rawValue))
                     }else{
-                        Button("Save") {
-                            dataViewModel.saveUpdateUserAmount(index: dataViewModel.usersInfoArray.firstIndex(
-                                where: { $0.id == self.id })!)
-                            try? dataViewModel.save()
-                            presentationMode.wrappedValue.dismiss()
-                        }
-                        .font(.system(size: 20, weight: .medium))
-                        .buttonStyle(.borderless)
-                        .padding(15)
-                        .background(Color(rawValue: textColor.rawValue))
-                        .cornerRadius(25)
-                        .foregroundColor(Color(rawValue: foregroundColor.rawValue))
+                        Text("$\(amount)")
+                            .frame(maxWidth: .infinity, maxHeight: 35, alignment: .center)
+                            .font(.system(size: 35, weight: .bold, design: .monospaced))
+                            .padding(.bottom)
                     }
                 }
                 .padding(.trailing, 15)
@@ -94,35 +83,16 @@ struct DetailView: View {
                         }
                     }
                 }
-                .onAppear {
-                    try? dataViewModel.load()
+                
+                .onChange(of: dataViewModel.hideButton) { _ in
+                    dataViewModel.saveUpdateUserAmount(index: dataViewModel.usersInfoArray.firstIndex(
+                                                    where: { $0.id == self.id })!)
                 }
+               
             }
             .background(Color.init(rawValue: backgroundColor.rawValue)?.ignoresSafeArea())
         }
     }
-    //    func addFinalPayment() {
-    //        if let index = dataViewModel.usersInfoArray.firstIndex(where: { $0.id == self.id }) {
-    //            print(index)
-    //            let specificUsers = dataViewModel.usersInfoArray[index]
-    //            if specificUsers.amount != "" {
-    //                if let amountValue = Double(specificUsers.amount.replacingOccurrences(of: ",", with: "")) {
-    //                    for num in 0..<specificUsers.steps {
-    //                        valueHolder = Double(specificUsers.valueHolder[num]) ?? 0.00
-    //                        totalValueHolder += valueHolder
-    //                    }
-    //
-    //                    let sum = amountValue - totalValueHolder
-    //                    finalPay = dataViewModel.formatNumber(sum)
-    //                    dataViewModel.finalAmount = finalPay
-    //                    dataViewModel.usersInfoArray[index] = specificUsers
-    //                    //                    try? dataViewModel.save()
-    //                }
-    //            }
-    //        }
-    //    }
-    
-    
 }
 
 
@@ -132,14 +102,10 @@ struct DetailView_Previews: PreviewProvider {
     @EnvironmentObject var dataViewModel: DataViewModel
     
     static var previews: some View {
-        DetailView(usersInfo:
-                    UserModel(id: UUID(), name: "",
+        DetailView(usersInfo: UserModel(id: UUID(), name: "",
                               amount: "", valueHolder: [""], steps: 0))
-        .environmentObject(DataViewModel(usersInfo:
-                                            UserModel(id: UUID(), name: "", amount: "",
-                                                      valueHolder: [], steps: 0
-                                                     )))
+        .environmentObject(DataViewModel(usersInfo: UserModel(id: UUID(), name: "", amount: "",
+                                                      valueHolder: [], steps: 0)))
     }
-    
 }
 

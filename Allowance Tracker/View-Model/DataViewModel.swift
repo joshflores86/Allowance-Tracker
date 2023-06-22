@@ -13,15 +13,16 @@ class DataViewModel: ObservableObject {
     @Published var usersInfo: UserModel
     @Published var usersInfoArray: [UserModel] = []
     @Published var billsArray: [String: [String]] = [
-        "Bills": ["Electric", "Water", "Cable", "Internet", "Phone Bill", "Groceries", "Car Loan"],
-        "Rewards": ["Good Grades", "Chores", "Good behavior", "Birthday"]
+        "-": ["-"],
+        "Bills": ["-","Electric", "Water", "Cable", "Internet", "Phone Bill", "Groceries", "Car Loan"],
+        "Rewards": ["-","Good Grades", "Chores", "Good behavior", "Birthday"]
     ]
     @Published var billsAndAmount: [String: Int] = [:]
     //    @Published var testValue1 = Array(repeating: "Good Behavior", count: 2)
     //    @Published var testPlacer = Array(repeating: "100.00", count: 2)
-    @Published var firstValue = Array(repeating: "", count: 50)
-    @Published var secondValue = Array(repeating: "", count: 50)
-    @Published var valuePlacer = Array(repeating: "", count: 50)
+    @Published var firstValue = Array(repeating: "-", count: 50)
+    @Published var secondValue = Array(repeating: "-", count: 50)
+    @Published var valuePlacer = Array(repeating: "$", count: 50)
     @Published var finalAmount: String = ""
     @Published var steps = 1
     @Published var usersCurrency: [String] = ["Currency", "$", "€", "£", "¥", "₣", "₹"]
@@ -32,6 +33,7 @@ class DataViewModel: ObservableObject {
     @Published var showMissingAmountAlert = false
     @Published var showCustomTextAlert = false
     @Published var showValue: Bool = false
+    @Published var hideButton: Bool = false
     @State var finalPay: String = ""
     
 //    @State var totalValueHolder = 0.00
@@ -75,7 +77,7 @@ class DataViewModel: ObservableObject {
     
     func addValueToArray() {
         for i in valuePlacer {
-            if i != "" {
+            if i != "$" {
                 usersInfo.valueHolder.append(i)
                 print(usersInfo.valueHolder)
             } else {
@@ -87,7 +89,7 @@ class DataViewModel: ObservableObject {
     
     func addSecValue(){
         for i in secondValue {
-            if i != "" {
+            if i != "-" {
                 usersInfo.secondValue.append(i)
                 print(usersInfo.initialValue)
             } else {
@@ -98,7 +100,7 @@ class DataViewModel: ObservableObject {
     
     func addInitialValue(){
         for i in firstValue {
-            if i != "" {
+            if i != "-" {
                 usersInfo.initialValue.append(i)
                 print(usersInfo.initialValue)
             } else {
@@ -114,14 +116,18 @@ class DataViewModel: ObservableObject {
     func saveUpdateUserAmount(index: Array<UserModel>.Index) {
         print(index)
         var specificUsers = usersInfoArray[index]
+        print(specificUsers)
         specificUsers.amount = finalAmount
+        specificUsers.showNoButton = hideButton
         specificUsers.paymentComplete = showValue
-        print(specificUsers.amount)
+        usersInfoArray[index] = specificUsers
+        
+        try? save()
     }
     
     func addFinalPayment(index: Array<UserModel>.Index) {
         var specificUsers = usersInfoArray[index]
-     
+        print(specificUsers)
         if specificUsers.amount != "" {
             if let amountValue = Double(specificUsers.amount.replacingOccurrences(of: ",", with: "")) {
                 print(amountValue)
@@ -131,13 +137,15 @@ class DataViewModel: ObservableObject {
                     print(valueHolder)
                   totalValueHolder += valueHolder
                 }
-               
                 let sum = amountValue - totalValueHolder
-                showValue.toggle()
+                print(sum)
                 finalAmount = formatNumber(sum)
+                hideButton.toggle()
                 
-                
-                
+                print(specificUsers.showNoButton)
+                specificUsers.amount = finalAmount
+            
+                try? save()
             }
         }
     }
@@ -180,12 +188,7 @@ class DataViewModel: ObservableObject {
             showMissingAmountAlert = true
         }else if num == 0 {
             showBillAlert = true
-            //        }else if num != 0 {
-            //            for i in 0..<num {
-            //                if firstValue[i] == "" {
-            //                    showAmountAlert = true
-            //                }
-            //            }
+            
         }else{
             print("Everything worked fine")
         }

@@ -25,6 +25,7 @@ struct UserModel: Hashable, Identifiable ,Codable {
     var steps: Int = 0
     var currency: String = ""
     var paymentComplete: Bool = false
+    var showNoButton: Bool = false
     var avatarImage: UIImage? {
         get{
             guard let imageData = avatarImageData else {

@@ -13,7 +13,7 @@ struct BillsAndRewards: View {
     @AppStorage ("foregroundColor") private var foregroundColor = AppColors.appColorYellow
     @AppStorage ("backgroundColor") private var backgroundColor = AppColors.appColorGray
     @AppStorage ("textColor") private var textColor = AppColors.appColorBlue
-    @State var entryView = EntryView()
+    
     @State private var selectedValue: String?
 //    @State var step = 0
     @State var currency: String = ""

@@ -11,9 +11,7 @@ import UIKit
 
 struct EntryView: View {
     
-    @EnvironmentObject var dataViewModel: DataViewModel
-    
-    
+    @StateObject var dataViewModel: DataViewModel
     @Environment(\.presentationMode) var presentationMode
     @AppStorage ("foregroundColor") private var foregroundColor = AppColors.appColorYellow
     @AppStorage ("backgroundColor") private var backgroundColor = AppColors.appColorGray
@@ -67,9 +65,9 @@ struct EntryView: View {
                                     if let formattedString = formatter.string(from: NSNumber(value: decimalAmount)) {
                                         // Update the amountString with the formatted currency value
                                         givenAmount = formattedString
-                                    }
-                                }
                             }
+                        }
+                    }
                 }
                 .toolbar {
                     ToolbarItemGroup(placement: .keyboard) {
@@ -97,25 +95,23 @@ struct EntryView: View {
                             .listRowBackground(Color(uiColor: UIColor(backgroundColor)))
                         }
                     }
-                        
                 }
-                
                 .listStyle(.plain)
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
                         Button("Save") {
                             dataViewModel.showAlert(num: step, name: userName, amount: givenAmount)
-                            
                             if !dataViewModel.showMissingNameAlert && !dataViewModel.showAmountAlert{
                                 dataViewModel.saveInfo( name: userName, amount: givenAmount, selectImage: avatarImage,
-                                                        initialArray: dataViewModel.usersInfo.initialValue, secondValue: dataViewModel.usersInfo.secondValue,
-                                                       valueArray: dataViewModel.usersInfo.valueHolder,
+                                                        initialArray: dataViewModel.usersInfo.initialValue, secondValue:
+                                                        dataViewModel.usersInfo.secondValue,valueArray: dataViewModel.usersInfo.valueHolder,
                                                        steps: dataViewModel.steps, selectedCurrency: dataViewModel.selectedCurrency)
+                                
                                 dataViewModel.firstValue = Array(repeating: "", count: 50)
                                 dataViewModel.secondValue = Array(repeating: "", count: 50)
                                 dataViewModel.valuePlacer = Array(repeating: "", count: 50)
-                                dataViewModel.steps = 0
-                                
+                                dataViewModel.steps = 1
+                                try! dataViewModel.save()
                                 presentationMode.wrappedValue.dismiss()
                             }
                         }
@@ -132,11 +128,8 @@ struct EntryView: View {
         
         //MARK: - Alerts below
         .alert(isPresented: getAlertBinding(), content: {dataViewModel.getAlert()})
-        
-        
         .foregroundColor(foregroundColor)
         .toolbar {
-            
             ToolbarItem(placement: .automatic) {
                 Button {
                     showBillsRewardSheet = true
@@ -145,19 +138,13 @@ struct EntryView: View {
                 }
             }
         }
-        
-        
-        
         .sheet(isPresented: $showImagePicker) {
             ImagePicker(image: $avatarImage)
-            
         }
         .sheet(isPresented: $showBillsRewardSheet) {
             BillsAndRewards()
         }
     }
-    
-    
     private func getAlertBinding() -> Binding<Bool> {
         if dataViewModel.showMissingNameAlert {
             return $dataViewModel.showMissingNameAlert
@@ -179,14 +166,14 @@ struct EntryView: View {
 struct AddUserView_Previews: PreviewProvider {
     @State private static var userInfo = UserModel(id: UUID(), name: "", amount: "",
                                                    valueHolder: [], steps: 0)
-    
+    @StateObject var dataViewModel: DataViewModel
     static var previews: some View {
         NavigationView {
             
-            EntryView()
-            
+            EntryView(dataViewModel: DataViewModel(usersInfo: userInfo))
+                .environmentObject(DataViewModel(usersInfo: userInfo))
         }
-        .environmentObject(DataViewModel(usersInfo: userInfo))
+        
         
         
         
