@@ -24,16 +24,16 @@ struct UserModel: Hashable, Identifiable ,Codable {
     var valueHolder: [String] 
     var steps: Int = 0
     var currency: String = ""
-    var paymentComplete: Bool = false
+    
     var showNoButton: Bool = false
-    var avatarImage: UIImage? {
+    var avatarImage: UIImage {
         get{
             guard let imageData = avatarImageData else {
-                return nil
+                return UIImage(named: "default-avatar")!
             }
             return UIImage(data: imageData)!
         }set{
-            avatarImageData = newValue?.pngData()
+            avatarImageData = newValue.pngData()
         }
     }
 }

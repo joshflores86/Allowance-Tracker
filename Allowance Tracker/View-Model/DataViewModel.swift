@@ -22,7 +22,7 @@ class DataViewModel: ObservableObject {
     //    @Published var testPlacer = Array(repeating: "100.00", count: 2)
     @Published var firstValue = Array(repeating: "-", count: 50)
     @Published var secondValue = Array(repeating: "-", count: 50)
-    @Published var valuePlacer = Array(repeating: "$", count: 50)
+    @Published var valuePlacer = Array(repeating: " ", count: 50)
     @Published var finalAmount: String = ""
     @Published var steps = 1
     @Published var usersCurrency: [String] = ["Currency", "$", "€", "£", "¥", "₣", "₹"]
@@ -32,7 +32,7 @@ class DataViewModel: ObservableObject {
     @Published var showMissingNameAlert = false
     @Published var showMissingAmountAlert = false
     @Published var showCustomTextAlert = false
-    @Published var showValue: Bool = false
+    
     @Published var hideButton: Bool = false
     @State var finalPay: String = ""
     
@@ -43,9 +43,16 @@ class DataViewModel: ObservableObject {
         self.usersInfo = usersInfo
     }
     
-    func saveInfo(name: String, amount: String, selectImage: UIImage, initialArray: [String], secondValue: [String] , valueArray: [String], steps: Int, selectedCurrency: String) {
-        usersInfoArray.append(UserModel(id: UUID(), name: name, amount: amount, avatarImageData: selectImage.pngData(), initialValue: initialArray, secondValue: secondValue, valueHolder: valueArray, steps: steps, currency: selectedCurrency))
+    func saveInfo(name: String, amount: String, selectImage: UIImage, initialArray: [String], secondValue: [String] , valueArray: [String], steps: Int) {
+        usersInfoArray.append(UserModel(id: UUID(), name: name, amount: amount, avatarImageData: selectImage.pngData(), initialValue: initialArray, secondValue: secondValue, valueHolder: valueArray, steps: steps))
         
+    }
+    
+    func specificUser() -> UserModel {
+        if let user = usersInfoArray.first(where: {$0.id == self.usersInfo.id}) {
+            usersInfo = user
+        }
+        return usersInfo
     }
     
     //MARK: - App Storage code
@@ -62,6 +69,7 @@ class DataViewModel: ObservableObject {
     func save() throws {
         let data = try JSONEncoder().encode(usersInfoArray)
         try data.write(to: notesFile)
+        print("Saved")
     }
     func load() throws {
         guard FileManager.default.isReadableFile(atPath: notesFile.path) else {return}
@@ -77,7 +85,7 @@ class DataViewModel: ObservableObject {
     
     func addValueToArray() {
         for i in valuePlacer {
-            if i != "$" {
+            if i != " " {
                 usersInfo.valueHolder.append(i)
                 print(usersInfo.valueHolder)
             } else {
@@ -119,10 +127,21 @@ class DataViewModel: ObservableObject {
         print(specificUsers)
         specificUsers.amount = finalAmount
         specificUsers.showNoButton = hideButton
-        specificUsers.paymentComplete = showValue
+        
         usersInfoArray[index] = specificUsers
         
         try? save()
+    }
+    
+    func saveUpdatedUserInfo(index: Array<UserModel>.Index, name: String, amount: String) {
+        print(index)
+       var specificUser = usersInfoArray[index]
+        specificUser.amount = amount
+        specificUser.name = name
+       try! save()
+        
+        print(specificUser)
+        
     }
     
     func addFinalPayment(index: Array<UserModel>.Index) {

@@ -30,7 +30,10 @@ struct EntryView: View {
     
     var body: some View {
         NavigationView {
-            VStack{
+            ZStack{
+                backgroundColor
+                    .ignoresSafeArea()
+                
                 VStack{
                     Image(uiImage: avatarImage)
                         .resizable()
@@ -38,78 +41,79 @@ struct EntryView: View {
                         .frame(width: 150, height: 150)
                         .clipShape(Circle())
                         .overlay(Circle().stroke(Color.black, lineWidth: 1))
+                        .onTapGesture {
+                            showImagePicker = true
+                        }
+                    VStack{
+                        TextField("Enter Name", text: $userName)
+                            .autocapitalization(.words)
+                        TextField("Enter Amount", text: $givenAmount)
+                            .keyboardType(.decimalPad)
+                    }
+                    .padding()
+                    .textFieldStyle(.roundedBorder)
                     
-                        .padding()
-                        .onTapGesture {showImagePicker = true}
-                    
-                    TextField("Add name", text: $userName)
-                        .autocapitalization(.words)
-                    TextField("Enter Initial Amount", text: $givenAmount)
-                        .padding(.bottom)
-                        .keyboardType(.decimalPad)
-                        .onChange(of: givenAmount) { newValue in
-                                // Remove non-numeric characters
-                                let filtered = newValue.filter { "0123456789".contains($0) }
-                                
-                                // Convert to a numeric value
-                                if let amount = Int(filtered) {
-                                    // Convert to decimal value
-                                    let decimalAmount = Double(amount) / 100.0
-                                    
-                                    // Format as currency string
-                                    let formatter = NumberFormatter()
-                                    formatter.numberStyle = .currency
-                                    formatter.currencyCode = "USD"
-                                    formatter.currencySymbol = ""
-                                    
-                                    if let formattedString = formatter.string(from: NSNumber(value: decimalAmount)) {
-                                        // Update the amountString with the formatted currency value
-                                        givenAmount = formattedString
+                    .onChange(of: givenAmount) { newValue in
+                        // Remove non-numeric characters
+                        let filtered = newValue.filter { "0123456789".contains($0) }
+                        
+                        // Convert to a numeric value
+                        if let amount = Int(filtered) {
+                            // Convert to decimal value
+                            let decimalAmount = Double(amount) / 100.0
+                            
+                            // Format as currency string
+                            let formatter = NumberFormatter()
+                            formatter.numberStyle = .currency
+                            formatter.currencyCode = "USD"
+                            formatter.currencySymbol = ""
+                            
+                            if let formattedString = formatter.string(from: NSNumber(value: decimalAmount)) {
+                                // Update the amountString with the formatted currency value
+                                givenAmount = formattedString
                             }
                         }
                     }
-                }
-                .toolbar {
-                    ToolbarItemGroup(placement: .keyboard) {
-                        Spacer()
-                        Button("Done") {
-                            dataViewModel.dismissKeyboard()
-                        }
-                    }
-                }
-                VStack{
-                    if dataViewModel.secondValue[0] == "" {
-                        EmptyListView_2()
-                        Color(uiColor: UIColor(backgroundColor))
-                    }else{
-                        List {
-                            ForEach(0..<dataViewModel.steps, id: \.self) { index in
-                                HStack{
-                                    VStack{
-                                        Text(dataViewModel.secondValue[index])
+                    VStack{
+                        
+                        if dataViewModel.secondValue[0] == "-" {
+                            EmptyListView_2()
+                        }else{
+                            List {
+                                ForEach(0..<dataViewModel.steps, id: \.self) { index in
+                                    HStack{
+                                        VStack{Text(dataViewModel.secondValue[index])}
+                                        Spacer()
+                                        Text("$ \(dataViewModel.valuePlacer[index])")
                                     }
-                                    Spacer()
-                                    Text("$ \(dataViewModel.valuePlacer[index])")
+                                    
                                 }
+                                .listRowBackground(backgroundColor)
                             }
-                            .listRowBackground(Color(uiColor: UIColor(backgroundColor)))
                         }
                     }
+                    
+                    .alert(isPresented: getAlertBinding(), content: {dataViewModel.getAlert()})
+                    .sheet(isPresented: $showBillsRewardSheet) {
+                        BillsAndRewards()
+                    }
+                    .sheet(isPresented: $showImagePicker) {
+                        ImagePicker(image: $avatarImage)
+                    }
                 }
-                .listStyle(.plain)
                 .toolbar {
-                    ToolbarItemGroup(placement: .bottomBar) {
+                    ToolbarItem(placement: .bottomBar) {
                         Button("Save") {
                             dataViewModel.showAlert(num: step, name: userName, amount: givenAmount)
                             if !dataViewModel.showMissingNameAlert && !dataViewModel.showAmountAlert{
                                 dataViewModel.saveInfo( name: userName, amount: givenAmount, selectImage: avatarImage,
                                                         initialArray: dataViewModel.usersInfo.initialValue, secondValue:
-                                                        dataViewModel.usersInfo.secondValue,valueArray: dataViewModel.usersInfo.valueHolder,
-                                                       steps: dataViewModel.steps, selectedCurrency: dataViewModel.selectedCurrency)
+                                                            dataViewModel.usersInfo.secondValue,valueArray: dataViewModel.usersInfo.valueHolder,
+                                                        steps: dataViewModel.steps)
                                 
-                                dataViewModel.firstValue = Array(repeating: "", count: 50)
-                                dataViewModel.secondValue = Array(repeating: "", count: 50)
-                                dataViewModel.valuePlacer = Array(repeating: "", count: 50)
+                                dataViewModel.firstValue = Array(repeating: "-", count: 50)
+                                dataViewModel.secondValue = Array(repeating: "-", count: 50)
+                                dataViewModel.valuePlacer = Array(repeating: " ", count: 50)
                                 dataViewModel.steps = 1
                                 try! dataViewModel.save()
                                 presentationMode.wrappedValue.dismiss()
@@ -117,34 +121,27 @@ struct EntryView: View {
                         }
                     }
                 }
+                .padding(.top)
             }
-            .background(Color(uiColor: UIColor(backgroundColor)).ignoresSafeArea())
-        }
-        .textFieldStyle(.roundedBorder)
-        .padding()
-        .environmentObject(dataViewModel)
-        .background(Color(uiColor: UIColor(backgroundColor)).ignoresSafeArea())
-        
-        
-        //MARK: - Alerts below
-        .alert(isPresented: getAlertBinding(), content: {dataViewModel.getAlert()})
-        .foregroundColor(foregroundColor)
-        .toolbar {
-            ToolbarItem(placement: .automatic) {
-                Button {
-                    showBillsRewardSheet = true
-                } label: {
-                    Image(systemName: "square.and.pencil")
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        dataViewModel.dismissKeyboard()
+                    }
                 }
+                
             }
         }
-        .sheet(isPresented: $showImagePicker) {
-            ImagePicker(image: $avatarImage)
-        }
-        .sheet(isPresented: $showBillsRewardSheet) {
-            BillsAndRewards()
-        }
+        .navigationBarItems(trailing: Button {
+            showBillsRewardSheet = true
+        } label: {
+            Image(systemName: "square.and.pencil")
+        })
+        
     }
+    
+    
     private func getAlertBinding() -> Binding<Bool> {
         if dataViewModel.showMissingNameAlert {
             return $dataViewModel.showMissingNameAlert
@@ -160,15 +157,12 @@ struct EntryView: View {
     }
     
 }
-
-
-
 struct AddUserView_Previews: PreviewProvider {
     @State private static var userInfo = UserModel(id: UUID(), name: "", amount: "",
                                                    valueHolder: [], steps: 0)
     @StateObject var dataViewModel: DataViewModel
     static var previews: some View {
-        NavigationView {
+        VStack{
             
             EntryView(dataViewModel: DataViewModel(usersInfo: userInfo))
                 .environmentObject(DataViewModel(usersInfo: userInfo))

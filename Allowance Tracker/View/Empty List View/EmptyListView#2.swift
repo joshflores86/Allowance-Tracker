@@ -17,12 +17,15 @@ struct EmptyListView_2: View {
             Spacer()
             Text("Add Bills / Rewards")
             Text("Tap \(squarePencil)")
+            Spacer()
         }
+        
         .font(.system(size: 30, weight: .medium, design: .serif))
         
         .foregroundColor(Color.white)
         .opacity(0.2)
-       
+        .frame(width: .infinity, height: .infinity)
+        
     }
 }
 
@@ -30,6 +33,7 @@ struct EmptyListView_2_Previews: PreviewProvider {
     static var previews: some View {
         EmptyListView_2()
             .background(Color.gray)
+        
     }
         
 }

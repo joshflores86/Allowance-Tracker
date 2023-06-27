@@ -15,12 +15,12 @@ struct DetailView: View {
     @EnvironmentObject var dataViewModel: DataViewModel
     @Environment(\.presentationMode) var presentationMode
     @State var usersInfo: UserModel
-    @State var name: String = ""
-    @State var avatarImage: UIImage = UIImage()
-    @State var amount: String = ""
-    @State var id = UUID()
+    @State var name: String
+    @State var avatarImage: UIImage
+    @State var amount: String
+    @State var id: UUID
     @State var currency = ""
-    @State var showValue = false
+    @State var steps: Int
     @State var hideSaveButton = Bool()
     
     
@@ -40,16 +40,16 @@ struct DetailView: View {
                 HStack{
                     Spacer()
                     if !hideSaveButton {
-                    Text("$\(amount)")//dataViewModel.showValue ? "$\(dataViewModel.finalAmount)" : )
+                    Text("$\(amount)")
                         .font(.system(size: 35, weight: .bold, design: .monospaced))
                         .frame(alignment: .centerLastTextBaseline)
                         .padding(.bottom)
                         .padding(.trailing, 5)
-                        Button("Final Payment", action: {
-                            dataViewModel.addFinalPayment(index: dataViewModel.usersInfoArray.firstIndex(
-                                where: { $0.id == self.id })!)
-                            print(hideSaveButton)
-                        })
+                    Button("Final Payment", action: {
+                            dataViewModel.addFinalPayment(
+                                index:dataViewModel.usersInfoArray.firstIndex(
+                                    where: { $0.id == self.id })!)
+                            print(hideSaveButton)})
                         .font(.system(size: 11))
                         .buttonStyle(.borderless)
                         .padding(10)
@@ -60,8 +60,7 @@ struct DetailView: View {
                         Text("$\(amount)")
                             .frame(maxWidth: .infinity, maxHeight: 35, alignment: .center)
                             .font(.system(size: 35, weight: .bold, design: .monospaced))
-                            .padding(.bottom)
-                    }
+                            .padding(.bottom)}
                 }
                 .padding(.trailing, 15)
                 List{
@@ -83,12 +82,26 @@ struct DetailView: View {
                         }
                     }
                 }
-                
                 .onChange(of: dataViewModel.hideButton) { _ in
                     dataViewModel.saveUpdateUserAmount(index: dataViewModel.usersInfoArray.firstIndex(
                                                     where: { $0.id == self.id })!)
                 }
-               
+                .onChange(of: dataViewModel.usersInfoArray) { _ in
+                    try? dataViewModel.load()
+                }
+                .onAppear{print(dataViewModel.usersInfoArray)}
+                
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                            NavigationLink(destination:
+                                            EditView(viewModel:
+                                                        dataViewModel, name: $name,
+                                                     amount: $amount, avatarImage: $avatarImage,
+                                                     id: id, steps: steps)) {
+                                Image(systemName: "slider.horizontal.3")
+                        }
+                    }
+                }
             }
             .background(Color.init(rawValue: backgroundColor.rawValue)?.ignoresSafeArea())
         }
@@ -100,10 +113,12 @@ struct DetailView: View {
 
 struct DetailView_Previews: PreviewProvider {
     @EnvironmentObject var dataViewModel: DataViewModel
-    
+    @State private static var userInfo = UserModel(id: UUID(), name: "", amount: "",
+                                                   valueHolder: [], steps: 0)
     static var previews: some View {
-        DetailView(usersInfo: UserModel(id: UUID(), name: "",
-                              amount: "", valueHolder: [""], steps: 0))
+        DetailView(usersInfo: userInfo, name: userInfo.name,
+                   avatarImage: userInfo.avatarImage,
+                   amount: userInfo.amount, id: userInfo.id, steps: userInfo.steps)
         .environmentObject(DataViewModel(usersInfo: UserModel(id: UUID(), name: "", amount: "",
                                                       valueHolder: [], steps: 0)))
     }

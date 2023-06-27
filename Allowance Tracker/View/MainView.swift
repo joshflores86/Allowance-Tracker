@@ -12,6 +12,7 @@ struct MainView: View {
     
   
     @EnvironmentObject var dataViewModel: DataViewModel
+    
     @State private var isDetailViewPresented = false
     @AppStorage ("foregroundColor") private var foregroundColor = AppColors.appColorYellow
     @AppStorage ("backgroundColor") private var backgroundColor = AppColors.appColorGray
@@ -42,8 +43,8 @@ struct MainView: View {
                                                                                name: users.name, avatarImage:
                                                                                 users.avatarImage ?? UIImage(named: "default-avatar")!,
                                                                                amount: users.amount, id: users.id,
-                                                                               currency: users.currency, showValue: users.paymentComplete,
-                                                                               hideSaveButton: users.showNoButton)) {
+                                                                               currency: users.currency,
+                                                                               steps: users.steps, hideSaveButton: users.showNoButton)) {
                                             HStack{
                                                 Image(uiImage: (users.avatarImage ?? UIImage(systemName: "default-avatar"))!)
                                                     .resizable()
@@ -58,7 +59,6 @@ struct MainView: View {
                                             
                                             .font(.system(size: 20, weight: .bold, design: .monospaced))
                                         }
-                                        
                                     }
                                     .onDelete(perform: dataViewModel.deleteUsers)
                                 }
@@ -76,7 +76,6 @@ struct MainView: View {
             .onAppear{
                 try? dataViewModel.load()
             }
-            
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: EntryView(dataViewModel: dataViewModel)) {
@@ -93,8 +92,6 @@ struct MainView: View {
             }
         }
         .foregroundColor(foregroundColor)
-      
-       
     }
 }
 
@@ -112,10 +109,11 @@ struct MainView_Previews: PreviewProvider {
     
     @State private static var userInfo = UserModel(id: UUID(), name: "", amount: "",
                                                    valueHolder: [ ], steps: 0)
-    @State var dataView: DataViewModel
+    
     static var previews: some View {
+        let dataViewModel = DataViewModel(usersInfo: userInfo)
         
-        MainView()
+        return MainView()
             .environmentObject(DataViewModel(usersInfo: userInfo))
     }
 }

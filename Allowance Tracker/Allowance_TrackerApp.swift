@@ -14,7 +14,7 @@ struct Allowance_TrackerApp: App {
     var body: some Scene {
         WindowGroup {
             SplashScreen(dataViewModel: DataViewModel(usersInfo: UserModel(id: UUID(), name: "", amount: "", valueHolder: [], steps: 0)))
-//            MainView(dataViewModel: DataViewModel(usersInfo: Allowance_TrackerApp.userInfo))
+
         }
     }
 }
