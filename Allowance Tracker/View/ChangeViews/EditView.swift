@@ -26,9 +26,7 @@ struct EditView: View {
     
     var body: some View {
         NavigationView {
-            Text("Edit User Info")
-                .navigationBarTitle("Title")
-                .font(.custom("Lobster-Regular", fixedSize: 30))
+          
             TabView {
                 EditUserView(dataViewModel:
                                 viewModel,
