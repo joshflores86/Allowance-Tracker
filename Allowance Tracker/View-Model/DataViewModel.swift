@@ -135,9 +135,9 @@ class DataViewModel: ObservableObject {
     
     func saveUpdatedUserInfo(index: Array<UserModel>.Index, name: String, amount: String) {
         print(index)
-       var specificUser = usersInfoArray[index]
-        specificUser.amount = amount
-        specificUser.name = name
+       
+        usersInfoArray[index].amount = amount
+        usersInfoArray[index].name = name
        try! save()
         
         print(specificUser)
