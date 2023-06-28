@@ -60,7 +60,7 @@ struct BillsAndRewards: View {
                                     Picker("", selection: $dataViewModel.firstValue[index]) {
                                         ForEach(dataViewModel.billsArray.keys.sorted(), id: \.self ) { key in
                                             Text(key)}}
-                                    if dataViewModel.firstValue[index] != "" {
+                                    if dataViewModel.firstValue[index] != "-" {
                                         Picker("Reward", selection: $dataViewModel.secondValue[index]) {
                                             ForEach(dataViewModel.billsArray[dataViewModel.firstValue[index]]!, id: \.self) { value in
                                                 Text(value)
