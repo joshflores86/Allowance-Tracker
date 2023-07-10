@@ -158,8 +158,12 @@ struct EntryView: View {
     
 }
 struct AddUserView_Previews: PreviewProvider {
-    @State private static var userInfo = UserModel(id: UUID(), name: "", amount: "",
-                                                   valueHolder: [], steps: 0)
+    @State private static var userInfo = UserModel(id: UUID(),
+                                                   name: "",
+                                                   amount: "",
+                                                   initialValue: [],
+                                                   valueHolder: [],
+                                                   steps: 0)
     @StateObject var dataViewModel: DataViewModel
     static var previews: some View {
         VStack{

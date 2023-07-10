@@ -19,7 +19,7 @@ struct UserModel: Hashable, Identifiable ,Codable {
     var name: String
     var amount: String
     var avatarImageData: Data?
-    var initialValue: [String] = []
+    var initialValue: [String]
     var secondValue: [String] = []
     var valueHolder: [String] 
     var steps: Int = 0
@@ -47,4 +47,14 @@ struct BottomBarColorModifier: ViewModifier {
     }
 }
 
-
+class BindingWrapper<T>: ObservableObject {
+    @Published var value: T
+    
+    init(value: T){
+        self.value = value
+    }
+    
+    var binding: Binding<T> {
+           Binding(get: { self.value }, set: { self.value = $0 })
+       }
+}

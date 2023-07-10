@@ -15,7 +15,7 @@ class DataViewModel: ObservableObject {
     @Published var billsArray: [String: [String]] = [
         "-": ["-"],
         "Bills": ["-","Electric", "Water", "Cable", "Internet", "Phone Bill", "Groceries", "Car Loan"],
-        "Rewards": ["-","Good Grades", "Chores", "Good behavior", "Birthday"]
+        "Rewards": ["-","Good Grades", "Chores", "Good Behavior", "Birthday"]
     ]
     @Published var billsAndAmount: [String: Int] = [:]
     //    @Published var testValue1 = Array(repeating: "Good Behavior", count: 2)
@@ -36,7 +36,7 @@ class DataViewModel: ObservableObject {
     @Published var hideButton: Bool = false
     @State var finalPay: String = ""
     
-//    @State var totalValueHolder = 0.00
+    //    @State var totalValueHolder = 0.00
     @State var valueHolder: Double = 0.00
     
     init(usersInfo: UserModel){
@@ -121,6 +121,8 @@ class DataViewModel: ObservableObject {
         UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.endEditing(true)
     }
     
+    //MARK: - Function for updating users info
+    
     func saveUpdateUserAmount(index: Array<UserModel>.Index) {
         print(index)
         var specificUsers = usersInfoArray[index]
@@ -133,14 +135,45 @@ class DataViewModel: ObservableObject {
         try? save()
     }
     
-    func saveUpdatedUserInfo(index: Array<UserModel>.Index, name: String, amount: String) {
+    func saveUpdatedUserInfo(index: Array<UserModel>.Index, name: String, amount: String, image: UIImage) {
         print(index)
         usersInfoArray[index].amount = amount
         usersInfoArray[index].name = name
-       try! save()
+        usersInfoArray[index].avatarImage = image
         
+        try? save()
         print(specificUser)
     }
+    
+    
+    func saveUpdatedBillsRewards(index: Array<UserModel>.Index, firstValue: [String], secondValue: [String], mainValue: [String], steps: Int) {
+        usersInfoArray[index].initialValue.removeAll()
+        usersInfoArray[index].secondValue.removeAll()
+        usersInfoArray[index].valueHolder.removeAll()
+        usersInfoArray[index].steps = steps
+        for i in firstValue{
+            if i != "-" {
+                usersInfoArray[index].initialValue.insert(i, at: 0)
+            }
+        }
+        print(usersInfoArray[index].initialValue)
+        for i in secondValue{
+            if i != "-" {
+                usersInfoArray[index].secondValue.insert(i, at: 0)
+            }
+        }
+        print(usersInfoArray[index].secondValue)
+        for i in mainValue{
+            if i != "-" {
+                usersInfoArray[index].valueHolder.insert(i, at: 0)
+            }
+        }
+        print(usersInfoArray[index].valueHolder)
+        try? save()
+    }
+    
+    
+    //MARK: - Function for adding final payment
     
     func addFinalPayment(index: Array<UserModel>.Index) {
         var specificUsers = usersInfoArray[index]
@@ -150,9 +183,9 @@ class DataViewModel: ObservableObject {
                 print(amountValue)
                 var totalValueHolder = 0.0
                 for num in 0..<specificUsers.valueHolder.count {
-                   let valueHolder = Double(specificUsers.valueHolder[num].replacingOccurrences(of: ",", with: "")) ?? 0.00
+                    let valueHolder = Double(specificUsers.valueHolder[num].replacingOccurrences(of: ",", with: "")) ?? 0.00
                     print(valueHolder)
-                  totalValueHolder += valueHolder
+                    totalValueHolder += valueHolder
                 }
                 let sum = amountValue - totalValueHolder
                 print(sum)
@@ -161,7 +194,7 @@ class DataViewModel: ObservableObject {
                 
                 print(specificUsers.showNoButton)
                 specificUsers.amount = finalAmount
-            
+                
                 try? save()
             }
         }
@@ -175,6 +208,8 @@ class DataViewModel: ObservableObject {
         numberFormatter.maximumFractionDigits = 2
         return numberFormatter.string(from: NSNumber(value: number)) ?? ""
     }
+    
+    
     
     
     //MARK: - Alert Functions
@@ -210,5 +245,33 @@ class DataViewModel: ObservableObject {
             print("Everything worked fine")
         }
     }
+    
+    
+    //MARK: - ActionSheet Alert function
+    
+    func confirmBillRewardsActionSheet(index: Array<UserModel>.Index,firstValue: [String],
+                            secondValue: [String], mainValue: [String], steps: Int) -> ActionSheet {
+        
+        let saveButton: ActionSheet.Button = .default(Text("Save")) {
+            self.saveUpdatedBillsRewards(index: index,
+                                    firstValue: firstValue,
+                                    secondValue: secondValue,
+                                    mainValue: mainValue,
+                                    steps: steps)
+        }
+        return ActionSheet(title: Text("Bills and Rewards"), message: Text("Are you sure you want to save"), buttons: [saveButton, .cancel()])
+    }
+    
+    func confirmUserEditActionSheet(index: Array<UserModel>.Index, userName: String,
+                                    userAmount: String, avatarImage: UIImage) -> ActionSheet {
+        
+        let saveButton: ActionSheet.Button = .default(Text("Save")) {
+            self.saveUpdatedUserInfo(index: index,
+                                     name: userName,
+                                     amount: userAmount,
+                                     image: avatarImage)
+        }
+        return ActionSheet(title: Text("User Info"), message: Text("Are you sure you want to save"), buttons: [saveButton, .cancel()])
+    }
+    
 }
-

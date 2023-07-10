@@ -12,7 +12,6 @@ struct MainView: View {
     
   
     @EnvironmentObject var dataViewModel: DataViewModel
-    
     @State private var isDetailViewPresented = false
     @AppStorage ("foregroundColor") private var foregroundColor = AppColors.appColorYellow
     @AppStorage ("backgroundColor") private var backgroundColor = AppColors.appColorGray
@@ -38,13 +37,22 @@ struct MainView: View {
                                 .frame(width: .infinity, height: 50, alignment: .leading)
                             VStack{
                                 List {
-                                    ForEach(dataViewModel.usersInfoArray, id: \.self) { users in
-                                        NavigationLink(destination: DetailView(usersInfo: dataViewModel.usersInfo,
-                                                                               name: users.name, avatarImage:
-                                                                                users.avatarImage ?? UIImage(named: "default-avatar")!,
-                                                                               amount: users.amount, id: users.id,
-                                                                               currency: users.currency,
-                                                                               steps: users.steps, hideSaveButton: users.showNoButton)) {
+                                    ForEach(dataViewModel.usersInfoArray.indices, id: \.self) { index in
+                                        let users = dataViewModel.usersInfoArray[index]
+                                        let amountWrapper = BindingWrapper(value: users.amount)
+                                        NavigationLink(
+                                            destination:DetailView(
+                                                dataViewModel: _dataViewModel,
+                                                usersInfo: users,
+                                                name: users.name,
+                                                avatarImage: users.avatarImage,
+                                                amount: amountWrapper.binding,
+                                                id: users.id,
+                                                steps: users.steps,
+                                                hideSaveButton: users.showNoButton,
+                                                firstValue: users.initialValue,
+                                                secondValue: users.secondValue,
+                                                mainValue: users.valueHolder)) {
                                             HStack{
                                                 Image(uiImage: (users.avatarImage ?? UIImage(systemName: "default-avatar"))!)
                                                     .resizable()
@@ -64,6 +72,7 @@ struct MainView: View {
                                 }
                                 .onChange(of: dataViewModel.usersInfoArray, perform: { _ in
                                     try! dataViewModel.save()
+                                    try? dataViewModel.load()
                                     
                                 })
                             }
@@ -107,8 +116,12 @@ extension Data {
 
 struct MainView_Previews: PreviewProvider {
     
-    @State private static var userInfo = UserModel(id: UUID(), name: "", amount: "",
-                                                   valueHolder: [ ], steps: 0)
+    @State private static var userInfo = UserModel(id: UUID(),
+                                                   name: "",
+                                                   amount: "",
+                                                   initialValue: [],
+                                                   valueHolder: [ ],
+                                                   steps: 0)
     
     static var previews: some View {
         let dataViewModel = DataViewModel(usersInfo: userInfo)

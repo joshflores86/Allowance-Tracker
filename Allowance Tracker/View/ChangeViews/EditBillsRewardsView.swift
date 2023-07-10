@@ -16,6 +16,9 @@ struct EditBillsRewardsView: View {
     
     @State private var selectedValue: String?
     @State var steps: Int
+    @State var firstValue: [String]
+    @State var secondValue: [String]
+    @State var mainValue: [String]
     @State var currency: String = ""
     @State var showCustomBillAlert = false
     @State var showCustomRewardAlert = false
@@ -23,55 +26,73 @@ struct EditBillsRewardsView: View {
     @State var rewardTextFieldValue: String = ""
     @State var id: UUID
     @Binding var specificUser: UserModel
+    @State var showConfirmSheet: Bool = false
+    let spacer: String = "-"
+    var index: Array<UserModel>.Index {
+        dataViewModel.usersInfoArray.firstIndex(where: {$0.id == self.id})!
+    }
     
     
     var body: some View {
         NavigationView {
             ZStack{
-               
+                
                 ScrollView(.vertical, showsIndicators: true) {
                     VStack{
-                        if dataViewModel.steps >= 1 {
-                            HStack{
-                                Button {
-                                    showCustomBillAlert = true
-                                } label: {
-                                    Image(systemName: "dollarsign.circle")
-                                        .imageScale(.large)
-                                }
-                                Spacer()
-                                Button {
-                                    showCustomRewardAlert = true
-                                } label: {
-                                    Image(systemName: "gift")
-                                        .imageScale(.large)
-                                }
+                        
+                        HStack{
+                            Button {
+                                showCustomBillAlert = true
+                            } label: {
+                                Image(systemName: "dollarsign.circle")
+                                    .imageScale(.large)
                             }
-                            .padding()
+                            Spacer()
+                            Button {
+                                showCustomRewardAlert = true
+                            } label: {
+                                Image(systemName: "gift")
+                                    .imageScale(.large)
+                            }
                         }
+                        .padding()
+                        
                         HStack{
                             Spacer()
-                            Stepper(value: $steps, in: 0...50) {
+                            Stepper("", value: $steps, in: 0...20, step: 1) { _ in
+                                if steps + 2 < firstValue.count {
+                                    firstValue.removeLast()
+                                    secondValue.removeLast()
+                                    mainValue.removeLast()
+                                }else{
+                                    firstValue.append(spacer)
+                                    secondValue.append(spacer)
+                                    mainValue.append(spacer)
+                                }
+                            }
+                            .onChange(of: steps) { _ in
+                                
+                                printer()
                             }
                         }
                         ForEach(0..<steps, id: \.self) { index in
                             HStack{
                                 VStack{
-                                    Picker("", selection: $specificUser.initialValue[index]) {
+                                    Picker("", selection: $firstValue[index]) {
                                         ForEach(dataViewModel.billsArray.keys.sorted(), id: \.self ) { key in
-                                            Text(key)}}
-                                    if specificUser.secondValue[index] != "" {
-                                        Picker("Reward", selection: $specificUser.secondValue[index]) {
-                                            ForEach(dataViewModel.billsArray[specificUser.initialValue[index]]!, id: \.self) { value in
-                                                Text(value)
+                                            Text(key).tag(key)}}
+                                    if firstValue[index] != "-" {
+                                        Picker("Reward", selection: $secondValue[index]) {
+                                            ForEach(dataViewModel.billsArray[firstValue[index]]!, id: \.self) { value in
+                                                Text(value).tag(value)
                                             }
                                         }
                                     }
                                 }
-                                TextField("Enter Amount", text: $specificUser.valueHolder[index]).tag(index)
+                                TextField("Enter Amount", text: $mainValue[index]).tag(index)
                                     .textFieldStyle(.roundedBorder)
                                     .keyboardType(.decimalPad)
-                                    .onChange(of: specificUser.valueHolder[index]) { newValue in
+                                    .onChange(of: mainValue[index]) { newValue in
                                         // Remove non-numeric characters
                                         let filtered = newValue.filter { "0123456789".contains($0) }
                                         
@@ -88,7 +109,7 @@ struct EditBillsRewardsView: View {
                                             
                                             if let formattedString = formatter.string(from: NSNumber(value: decimalAmount)) {
                                                 // Update the amountString with the formatted currency value
-                                                specificUser.valueHolder[index] = formattedString
+                                                mainValue[index] = formattedString
                                             }
                                         }
                                     }
@@ -104,66 +125,91 @@ struct EditBillsRewardsView: View {
                             }
                         }
                     }
-                        
-                    }
-                }
-                
-                .padding()
-                
-            }
-//            .toolbar {
-//                ToolbarItem(placement: .principal) {
-//                    Text("Bills And Rewards")
-//                        .font(Font.custom("Lobster-Regular", size: 40))
-//                        .navigationBarTitleDisplayMode(.large)
-//                        .padding(.top)
-//                }
-//            }
-            .alert("Enter Custom Bill", isPresented: $showCustomBillAlert) {
-                TextField("Custom Bill", text: $billsTextFieldValue)
-                Button("Save") {
-                    if billsTextFieldValue != "" {
-                        dataViewModel.billsArray["Bills"]?.append(billsTextFieldValue)
-                        showCustomBillAlert = false
-                    }else{
-                        showCustomBillAlert = false
-                    }
-                    
                 }
             }
-            .alert("Enter Custom Reward", isPresented: $showCustomRewardAlert) {
-                TextField("Custom Bill", text: $rewardTextFieldValue)
-                Button("Save") {
-                    if rewardTextFieldValue != "" {
-                        dataViewModel.billsArray["Rewards"]?.append(rewardTextFieldValue)
-                        showCustomBillAlert = false
-                    }else{
-                        showCustomBillAlert = false
+            .padding()
+            .onAppear{
+                for _ in specificUser.initialValue {
+                    firstValue.append(spacer)
+                }
+                for _ in specificUser.secondValue {
+                    secondValue.append(spacer)
+                }
+                for _ in specificUser.valueHolder {
+                    mainValue.append(spacer)
+                }
+                //                print(firstValue)
+                //                print(secondValue)
+            }
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    Button {
+                        showConfirmSheet.toggle()
+                    } label: {
+                        Text("Save")
                     }
                 }
             }
-            
+            .actionSheet(isPresented: $showConfirmSheet) {
+                dataViewModel.confirmBillRewardsActionSheet(index: index,
+                                                 firstValue: firstValue,
+                                                 secondValue: secondValue,
+                                                 mainValue: mainValue,
+                                                 steps: steps)
+            }
         }
         
+        .alert("Enter Custom Bill", isPresented: $showCustomBillAlert) {
+            TextField("Custom Bill", text: $billsTextFieldValue)
+            Button("Save") {
+                if billsTextFieldValue != "" {
+                    dataViewModel.billsArray["Bills"]?.append(billsTextFieldValue)
+                    showCustomBillAlert = false
+                }else{
+                    showCustomBillAlert = false
+                }
+            }
+        }
+        .alert("Enter Custom Reward", isPresented: $showCustomRewardAlert) {
+            TextField("Custom Bill", text: $rewardTextFieldValue)
+            Button("Save") {
+                if rewardTextFieldValue != "" {
+                    dataViewModel.billsArray["Rewards"]?.append(rewardTextFieldValue)
+                    showCustomBillAlert = false
+                }else{
+                    showCustomBillAlert = false
+                }
+            }
+        }
+    }
+    
     
     
     func printer() {
-        print(dataViewModel.steps)
-        print(dataViewModel.firstValue)
-        print(dataViewModel.valuePlacer)
-        print(dataViewModel.secondValue)
+        print(firstValue)
+        print(secondValue)
+        print(mainValue)
+        print(steps)
         
     }
 }
 
 
 struct EditBillsRewardsView_Previews: PreviewProvider {
-    @State static var userInfo = UserModel(id: UUID(), name: "",
-                                           amount: "", valueHolder: [])
+    @State static var userInfo = UserModel(id: UUID(),
+                                           name: "",
+                                           amount: "",
+                                           initialValue: [],
+                                           valueHolder: [])
     @State static var dataViewModel = DataViewModel(usersInfo: userInfo)
     static var previews: some View {
         EditBillsRewardsView(dataViewModel: dataViewModel,
-                             steps: userInfo.steps, id: userInfo.id, specificUser: $userInfo)
-            .environmentObject(DataViewModel(usersInfo: userInfo))
+                             steps: userInfo.steps,
+                             firstValue: [],
+                             secondValue: [],
+                             mainValue: [],
+                             id: userInfo.id,
+                             specificUser: $userInfo)
+        .environmentObject(DataViewModel(usersInfo: userInfo))
     }
 }

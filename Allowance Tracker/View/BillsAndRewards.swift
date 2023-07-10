@@ -15,7 +15,7 @@ struct BillsAndRewards: View {
     @AppStorage ("textColor") private var textColor = AppColors.appColorBlue
     
     @State private var selectedValue: String?
-//    @State var step = 0
+    //    @State var step = 0
     @State var currency: String = ""
     @State var showCustomBillAlert = false
     @State var showCustomRewardAlert = false
@@ -50,9 +50,7 @@ struct BillsAndRewards: View {
                         }
                         HStack{
                             Spacer()
-                            Stepper(value: $dataViewModel.steps, in: 0...50) {
-//
-                            }
+                            Stepper(value: $dataViewModel.steps, in: 0...50) {}
                         }
                         ForEach(0..<dataViewModel.steps, id: \.self) { index in
                             HStack{
@@ -61,40 +59,43 @@ struct BillsAndRewards: View {
                                         ForEach(dataViewModel.billsArray.keys.sorted(), id: \.self ) { key in
                                             Text(key)}}
                                     if dataViewModel.firstValue[index] != "-" {
-                                        Picker("Reward", selection: $dataViewModel.secondValue[index]) {
+                                        Picker("", selection: $dataViewModel.secondValue[index]) {
                                             ForEach(dataViewModel.billsArray[dataViewModel.firstValue[index]]!, id: \.self) { value in
                                                 Text(value)
+                                                    
                                             }
                                         }
+                                        .lineLimit(nil)
+                                        .multilineTextAlignment(.center)
+                                        .frame(width: 120)
                                     }
                                 }
                                 TextField("Enter Amount", text: $dataViewModel.valuePlacer[index]).tag(index)
                                     .textFieldStyle(.roundedBorder)
                                     .keyboardType(.decimalPad)
                                     .onChange(of: dataViewModel.valuePlacer[index]) { newValue in
-                                            // Remove non-numeric characters
-                                            let filtered = newValue.filter { "0123456789".contains($0) }
+                                        // Remove non-numeric characters
+                                        let filtered = newValue.filter { "0123456789".contains($0) }
+                                        
+                                        // Convert to a numeric value
+                                        if let amount = Int(filtered) {
+                                            // Convert to decimal value
+                                            let decimalAmount = Double(amount) / 100.0
                                             
-                                            // Convert to a numeric value
-                                            if let amount = Int(filtered) {
-                                                // Convert to decimal value
-                                                let decimalAmount = Double(amount) / 100.0
-                                                
-                                                // Format as currency string
-                                                let formatter = NumberFormatter()
-                                                formatter.numberStyle = .currency
-                                                formatter.currencyCode = "USD"
-                                                formatter.currencySymbol = ""
-                                                
-                                                if let formattedString = formatter.string(from: NSNumber(value: decimalAmount)) {
-                                                    // Update the amountString with the formatted currency value
-                                                    dataViewModel.valuePlacer[index] = formattedString
-                                                }
+                                            // Format as currency string
+                                            let formatter = NumberFormatter()
+                                            formatter.numberStyle = .currency
+                                            formatter.currencyCode = "USD"
+                                            formatter.currencySymbol = ""
+                                            
+                                            if let formattedString = formatter.string(from: NSNumber(value: decimalAmount)) {
+                                                // Update the amountString with the formatted currency value
+                                                dataViewModel.valuePlacer[index] = formattedString
                                             }
                                         }
+                                    }
                             }
                         }
-                        
                     }
                     .toolbar {
                         ToolbarItem(placement: .bottomBar) {
@@ -164,8 +165,12 @@ struct BillsAndRewards: View {
 }
 
 struct BillsAndRewards_Previews: PreviewProvider {
-    @State private static var userInfo = UserModel(id: UUID(), name: "", amount: "",
-                                                   valueHolder: [], steps: 0)
+    @State private static var userInfo = UserModel(id: UUID(),
+                                                   name: "",
+                                                   amount: "",
+                                                   initialValue: [],
+                                                   valueHolder: [],
+                                                   steps: 0)
     static var previews: some View {
         NavigationView {
             ZStack{

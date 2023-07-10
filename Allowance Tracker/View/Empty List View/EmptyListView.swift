@@ -35,7 +35,9 @@ struct EmptyListView_Previews: PreviewProvider {
         EmptyListView()
             .environmentObject(DataViewModel(usersInfo:
                                                 UserModel(id: UUID(),
-                                                          name: "", amount: "",
+                                                          name: "",
+                                                          amount: "",
+                                                          initialValue: [],
                                                           valueHolder: [])))
     }
         

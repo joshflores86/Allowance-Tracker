@@ -64,8 +64,12 @@ struct SplashScreen: View {
 struct SplashScreen_Previews: PreviewProvider {
     static  private var dataViewModel =
     DataViewModel(usersInfo:
-                    UserModel(id: UUID(), name: "",
-                              amount: "", valueHolder: [], steps: 0))
+                    UserModel(id: UUID(),
+                              name: "",
+                              amount: "",
+                              initialValue: [],
+                              valueHolder: [],
+                              steps: 0))
     
     static var previews: some View {
         SplashScreen(dataViewModel: dataViewModel)
